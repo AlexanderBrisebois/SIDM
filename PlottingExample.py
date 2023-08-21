@@ -26,22 +26,22 @@ R_grid = np.linspace(-20,20,len(rho))*u.kpc
 z_grid = np.linspace(-20,20,len(rho))*u.kpc
 
 #Creating Interpolation Object
-ip = DirectInterpRZPotential.DirectInterpRZPotential(directPotentialGrid=-h*(150*u.km/u.s)**2, directRGrid=R_grid.value, directzGrid=z_grid.value, interpPot=True, logR=False, fallbackPotential=MWPotential2014[2], interpDens=False, directDensGrid=rho)
+ip = DirectInterpRZPotential.DirectInterpRZPotential(directPotentialGrid=-h*(150*u.km/u.s)**2, directRGrid=R_grid.value, directzGrid=z_grid.value, interpPot=True, logR=False, fallbackPotential=MWPotential2014[2], interpDens=True, directDensGrid=rho)
 
 test_R_grid = np.linspace(0,19.9,400)*u.kpc
 test_z_grid = np.linspace(0,19.9,400)*u.kpc
 
 #Density Interpolation
-# interpolated_dens = np.zeros((len(test_R_grid), len(test_z_grid)))
-#
-# for i,R in enumerate(test_R_grid):
-#     for j,z in enumerate(test_z_grid):
-#         interpolated_dens[j][i] = ip.dens_eval(R.value, z.value)
-#
-# plt.imshow(interpolated_dens, interpolation='nearest', extent =[test_R_grid.min().value, test_R_grid[:].max().value, test_z_grid.min().value, test_z_grid.max().value], cmap='hsv',  origin='lower', norm=matplotlib.colors.LogNorm())
-# plt.colorbar()
-# plt.title("Interpolated Density")
-# plt.show()
+interpolated_dens = np.zeros((len(test_R_grid), len(test_z_grid)))
+
+for i,R in enumerate(test_R_grid):
+    for j,z in enumerate(test_z_grid):
+        interpolated_dens[j][i] = ip.dens_eval(R.value, z.value)
+
+plt.imshow(interpolated_dens, interpolation='nearest', extent =[test_R_grid.min().value, test_R_grid[:].max().value, test_z_grid.min().value, test_z_grid.max().value], cmap='hsv',  origin='lower', norm=matplotlib.colors.LogNorm())
+plt.colorbar()
+plt.title("Interpolated Density")
+plt.show()
 
 # R_Force plot
 new_evaluated_R_force = ip.Rforce(test_R_grid,test_z_grid)
